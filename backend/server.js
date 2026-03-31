@@ -13,8 +13,8 @@ connectDB();
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
-    // origin:"https://news-bites.vercel.app",
+    // origin: "http://localhost:3000",
+    origin:"https://news-bites.vercel.app",
     credentials: true
   })
 );
