@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import API from "../services/api";
 
 import {
@@ -17,18 +17,8 @@ function Analytics() {
   const { adId } = useParams();
 
 
-  useEffect(() => {
 
-    if (adId) {
-      fetchSingleAnalytics(adId);
-    } else {
-      fetchAds();
-    }
-
-  }, []);
-
-
-  const fetchSingleAnalytics = async (id) => {
+  const fetchSingleAnalytics = useCallback(async (id) => {
 
     try {
 
@@ -56,9 +46,9 @@ function Analytics() {
 
     }
 
-  };
+  }, []);
 
-  const fetchAds = async () => {
+  const fetchAds = useCallback(async () => {
 
     try {
 
@@ -74,7 +64,7 @@ function Analytics() {
 
     }
 
-  };
+  }, []);
 
 
   const fetchAnalytics = async (adsList) => {
@@ -107,6 +97,15 @@ function Analytics() {
 
   };
 
+    useEffect(() => {
+
+    if (adId) {
+      fetchSingleAnalytics(adId);
+    } else {
+      fetchAds();
+    }
+
+  }, [adId, fetchSingleAnalytics, fetchAds]);
 
   return (
 

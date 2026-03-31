@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import API from "../services/api";
 import ArticleCard from "../components/ArticleCard";
 import AdCard from "../components/AdCard";
@@ -19,26 +19,7 @@ function Feed() {
   const [mode, setMode] = useState("for-you");
 
 
-  useEffect(() => {
-
-    fetchFeed(page);
-
-  }, [page, mode]);
-
-
-
-  useEffect(() => {
-
-    setFeed([]);
-
-    setPage(1);
-
-    setHasMore(true);
-
-  }, [mode]);
-
-  const fetchFeed = async (pageNumber) => {
-
+  const fetchFeed = useCallback(async (pageNumber) => {
     try {
 
       const endpoint =
@@ -47,6 +28,7 @@ function Feed() {
           : `/feed?page=${pageNumber}&limit=${limit}`;
 
       const res = await API.get(endpoint);
+
       if (res.data.length === 0) {
         setHasMore(false);
         return;
@@ -65,8 +47,25 @@ function Feed() {
       setLoading(false);
 
     }
+  }, [mode]);
 
-  };
+
+
+  useEffect(() => {
+    fetchFeed(page);
+  }, [page, fetchFeed]);
+
+
+
+  useEffect(() => {
+
+    setFeed([]);
+
+    setPage(1);
+
+    setHasMore(true);
+
+  }, [mode]);
 
 
   const loadMore = () => {
@@ -110,29 +109,29 @@ function Feed() {
     <div className="space-y-6">
 
 
-<div className="flex justify-between items-center">
+      <div className="flex justify-between items-center">
 
-  <div>
+        <div>
 
-    <h1 className="text-2xl font-bold text-gray-800">
-      Your Personalized Feed
-    </h1>
+          <h1 className="text-2xl font-bold text-gray-800">
+            Your Personalized Feed
+          </h1>
 
-    <p className="text-sm text-gray-500">
-      Based on your selected interests
-    </p>
+          <p className="text-sm text-gray-500">
+            Based on your selected interests
+          </p>
 
-  </div>
+        </div>
 
 
-  <button
-    onClick={() => navigate("/categories")}
-    className="text-sm text-indigo-600 hover:underline"
-  >
-    Change Interests
-  </button>
+        <button
+          onClick={() => navigate("/categories")}
+          className="text-sm text-indigo-600 hover:underline"
+        >
+          Change Interests
+        </button>
 
-</div>
+      </div>
 
       <div className="flex gap-4 mb-6">
 

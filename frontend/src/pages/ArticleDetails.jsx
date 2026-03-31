@@ -1,10 +1,9 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useEffect, useState, useCallback } from "react";
 import API from "../services/api";
 import toast from "react-hot-toast";
 
 import {
-  ArrowLeft,
   Calendar,
   Newspaper,
   Bookmark,
@@ -14,29 +13,17 @@ import {
 function ArticleDetails() {
 
   const { id } = useParams();
-  const navigate = useNavigate();
+
 
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
 
 
-  useEffect(() => {
 
-    if (!id) {
-      setError("Invalid article ID");
-      setLoading(false);
-      return;
-    }
-
-    fetchArticle();
-
-  }, [id]);
-
-
-  const fetchArticle = async () => {
+ const fetchArticle = useCallback(async () => {
 
     try {
 
@@ -64,8 +51,19 @@ function ArticleDetails() {
 
     }
 
-  };
+}, [id]);
 
+ useEffect(() => {
+
+  if (!id) {
+    setError("Invalid article ID");
+    setLoading(false);
+    return;
+  }
+
+  fetchArticle();
+
+}, [id, fetchArticle]);
 
   //  TOGGLE SAVE / UNSAVE
 
@@ -188,7 +186,6 @@ function ArticleDetails() {
 
             <button
               onClick={toggleSave}
-              disabled={saving}
               className={`flex items-center gap-2 px-5 py-2 rounded-lg transition text-sm font-medium
                 ${saved
                   ? "bg-indigo-100 text-indigo-600"
