@@ -10,7 +10,7 @@ export const updatePreferences = async (req, res) => {
     const user = await User.findByIdAndUpdate(
       req.user._id,
       { preferences },
-      { new: true }
+      {returnDocument: "after"},
     );
 
     res.json({

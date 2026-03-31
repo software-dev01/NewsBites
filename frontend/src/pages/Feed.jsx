@@ -103,23 +103,6 @@ function Feed() {
 
   }
 
-  if (!loading && feed.length === 0) {
-
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-
-        <div className="text-gray-500 text-lg">
-
-          {mode === "for-you"
-            ? "No articles match your selected interests yet."
-            : "No articles available at the moment."}
-
-        </div>
-
-      </div>
-    );
-
-  }
 
 
   return (
@@ -177,6 +160,23 @@ function Feed() {
         </button>
 
       </div>
+
+
+      {!loading && feed.length === 0 && 
+
+      <div className="flex justify-center items-center h-[50vh]">
+
+        <div className="text-gray-500 text-lg">
+
+          {mode === "for-you"
+            ? "No articles match your selected interests yet."
+            : "No articles available at the moment."}
+
+        </div>
+
+      </div>
+
+      }
 
 
       {

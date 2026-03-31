@@ -45,7 +45,7 @@ export const updateAd = async (req, res) => {
     const ad = await Ad.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true }
+     { returnDocument: "after" }
     );
 
     res.json(ad);

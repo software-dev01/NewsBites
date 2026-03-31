@@ -33,7 +33,7 @@ export const getFeed = async (req, res) => {
     const ads = await Ad.find({ active: true });
 
     let feed = [];
-    let adIndex = 0;
+    let adIndex = Math.floor(skip / 5);
 
     articles.forEach((article, index) => {
 
@@ -47,7 +47,7 @@ export const getFeed = async (req, res) => {
         }
       });
 
-      if ((index + 1) % 5 === 0 && ads.length > 0) {
+      if (((skip + index + 1) % 5 === 0) && ads.length > 0){
         feed.push({
           type: "ad",
           data: ads[adIndex % ads.length]
