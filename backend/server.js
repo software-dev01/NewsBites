@@ -14,7 +14,8 @@ connectDB();
 app.use(
   cors({
     // origin: "http://localhost:3000",
-    origin:"https://news-bites-a4mcg8mux-devs-projects-57cfe25f.vercel.app/",
+    // origin:"https://news-bites-a4mcg8mux-devs-projects-57cfe25f.vercel.app/",
+    origin:"https://news-bites.vercel.app",
     credentials: true
   })
 );
