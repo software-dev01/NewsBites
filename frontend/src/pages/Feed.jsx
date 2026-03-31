@@ -21,7 +21,7 @@ function Feed() {
 
   const fetchFeed = useCallback(async (pageNumber) => {
     try {
-
+      setLoading(true);
       const endpoint =
         mode === "for-you"
           ? `/user/for-you?page=${pageNumber}&limit=${limit}`
@@ -99,6 +99,24 @@ function Feed() {
 
       </div>
 
+    );
+
+  }
+
+  if (!loading && feed.length === 0) {
+
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+
+        <div className="text-gray-500 text-lg">
+
+          {mode === "for-you"
+            ? "No articles match your selected interests yet."
+            : "No articles available at the moment."}
+
+        </div>
+
+      </div>
     );
 
   }
@@ -194,8 +212,15 @@ function Feed() {
       {/* Load More Button */}
 
       {
+        loading && page > 1 ? (
 
-        hasMore && (
+          <div className="flex justify-center">
+            <div className="text-gray-500 animate-pulse">
+              Loading more articles...
+            </div>
+          </div>
+
+        ) : hasMore ? (
 
           <div className="flex justify-center">
 
@@ -203,15 +228,12 @@ function Feed() {
               onClick={loadMore}
               className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
             >
-
               Load More
-
             </button>
 
           </div>
 
-        )
-
+        ) : null
       }
 
     </div>

@@ -20,11 +20,13 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
-
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
 
     try {
+      setLoading(true);
+      setError("");
 
       const res = await API.post("/auth/login", {
         email,
@@ -60,6 +62,10 @@ function Login() {
       setError(
         err.response?.data?.message || "Login failed"
       );
+
+    } finally {
+
+      setLoading(false);
 
     }
 
@@ -193,15 +199,29 @@ function Login() {
 
         <button
           onClick={handleLogin}
-          className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-300"
+          disabled={loading}
+          className={`w-full flex items-center justify-center gap-2 text-white font-semibold py-2 rounded-lg transition duration-300
+  ${loading
+              ? "bg-blue-400 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700"
+            }`}
         >
 
-          <LogIn size={18} />
-
-          Login
+          {
+            loading ? (
+              <>
+                <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+                Logging in...
+              </>
+            ) : (
+              <>
+                <LogIn size={18} />
+                Login
+              </>
+            )
+          }
 
         </button>
-
 
 
         {/* FOOTER */}
